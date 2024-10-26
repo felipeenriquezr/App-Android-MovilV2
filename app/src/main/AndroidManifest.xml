@@ -13,8 +13,10 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".ui.theme.CarritoCompras"
-            android:exported="false" />
+            android:name=".CarroCompras"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.App"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

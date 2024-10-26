@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : ComponentActivity() {
 
@@ -27,6 +28,11 @@ class MainActivity : ComponentActivity() {
         passwordEditText.setText(defaultPassword)
         // Acción para el botón de "Iniciar Sesión"
         loginButton.setOnClickListener {
+
+            val intent = Intent(this, CarroCompras::class.java) // Creamos un Intent para redirigir a carro de compras
+            startActivity(intent) // Inicia la vista de carro de compras
+
+            /*
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -45,7 +51,7 @@ class MainActivity : ComponentActivity() {
                 } else {
                     Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                 }
-            }
+            }*/
         }
 
 
