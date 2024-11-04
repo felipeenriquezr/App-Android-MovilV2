@@ -33,6 +33,16 @@
             android:exported="true"
             android:label="App"
             android:theme="@style/Theme.App" />
+        <activity
+            android:name=".CrearActivity"
+            android:exported="true"
+            android:label="App"
+            android:theme="@style/Theme.App" />
+        <activity
+            android:name=".EditActivity"
+            android:exported="true"
+            android:label="App"
+            android:theme="@style/Theme.App" />
     </application>
 
 </manifest>
