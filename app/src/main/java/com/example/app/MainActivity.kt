@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : ComponentActivity() {
 
@@ -29,7 +27,7 @@ class MainActivity : ComponentActivity() {
         // Acción para el botón de "Iniciar Sesión"
         loginButton.setOnClickListener {
 
-            val intent = Intent(this, CarroCompras::class.java) // Creamos un Intent para redirigir a carro de compras
+            val intent = Intent(this, CarryCompass::class.java) // Creamos un Intent para redirigir a carro de compras
             startActivity(intent) // Inicia la vista de carro de compras
 
             /*
