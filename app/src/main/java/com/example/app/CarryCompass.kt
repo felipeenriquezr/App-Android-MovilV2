@@ -13,7 +13,7 @@ class CarryCompass : ComponentActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
-    private lateinit var productList: List<Product>
+    private lateinit var productList: MutableList<Product>
     private lateinit var btnIrAlMapa: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,18 +23,17 @@ class CarryCompass : ComponentActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Crear una lista de productos quemados
-        productList = listOf(
+        productList = mutableListOf(
             Product("Producto A", "Descripcion 1", "10.99", "https://www.elevencomunicacion.com/wp-content/uploads/2021/02/foto-profesional-producto-restaurante.jpg"),
             Product("Producto B", "Descripcion 2", "15.49", "default.jpg"),
             Product("Producto C", "Descripcion 3", "8.75", "default.jpg"),
             Product("Producto D", "Descripcion 4", "12.30", "default.jpg")
         )
 
-        adapter = ProductAdapter(productList)
+        // Pasar el contexto al adaptador
+        adapter = ProductAdapter(productList, this)
         recyclerView.adapter = adapter
 
-        // Configurar el botón para ir a la actividad de geolocalización
         btnIrAlMapa = findViewById(R.id.btnIrAlMapa)
         btnIrAlMapa.setOnClickListener {
             val intent = Intent(this, GeolocationActivity::class.java)
