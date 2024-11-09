@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- Tema basado en Material -->
     <style name="Theme.App" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Tema basado en AppCompat -->
+    <style name="Theme.App.AppCompat" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Personaliza tu tema aquí -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">@color/teal_200</item>
+    </style>
 </resources>

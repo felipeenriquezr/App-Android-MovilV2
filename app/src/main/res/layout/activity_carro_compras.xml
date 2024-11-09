@@ -47,7 +47,7 @@
 
                 <EditText
                     android:id="@+id/editTextText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="265dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
@@ -59,6 +59,16 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnIrAlMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_marginStart="8dp"
+            android:text="Ir al mapa"
+            android:backgroundTint="@color/teal_700"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

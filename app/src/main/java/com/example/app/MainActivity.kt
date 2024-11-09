@@ -5,11 +5,12 @@ import androidx.activity.ComponentActivity
 import android.widget.Button
 import android.widget.EditText
 import android.content.Intent
+import android.widget.Toast
 
 class MainActivity : ComponentActivity() {
 
-        private val defaultEmail = "usuario@example.com"
-        private val defaultPassword = "123456"
+    private val defaultEmail = "usuario@example.com"
+    private val defaultPassword = "123456"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,13 +25,9 @@ class MainActivity : ComponentActivity() {
         // Pre-fill the EditText fields with default values for testing
         emailEditText.setText(defaultEmail)
         passwordEditText.setText(defaultPassword)
+
         // Acción para el botón de "Iniciar Sesión"
         loginButton.setOnClickListener {
-
-            val intent = Intent(this, CarryCompass::class.java) // Creamos un Intent para redirigir a carro de compras
-            startActivity(intent) // Inicia la vista de carro de compras
-
-            /*
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -42,22 +39,21 @@ class MainActivity : ComponentActivity() {
                 if (authenticateUser(email, password)) {
                     Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
 
-                    // Redirigir a otra actividad (por ejemplo, MainActivity)
-                    val intent = Intent(this, MainActivity::class.java)
+                    // Redirigir a la actividad CarryCompass (lista de productos)
+                    val intent = Intent(this, CarryCompass::class.java)
                     startActivity(intent)
-                    finish() // Finaliza el LoginActivity para que el usuario no vuelva con el botón de retroceso
+                    finish() // Finaliza la actividad actual para que no regrese con el botón de retroceso
                 } else {
                     Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                 }
-            }*/
+            }
         }
-
 
         // Acción para el botón de "Registro"
         registerButton.setOnClickListener {
             // Redirigir a la actividad de registro
-            val intent = Intent(this, RegisterActivity::class.java) // Creamos un Intent para redirigir a RegisterActivity
-            startActivity(intent) // Inicia la actividad de registro
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -67,6 +63,3 @@ class MainActivity : ComponentActivity() {
         return email == "usuario@example.com" && password == "123456"
     }
 }
-
-
-

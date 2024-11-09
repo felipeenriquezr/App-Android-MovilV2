@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,15 +18,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDwlfwCVcnv_fCscJ6tYm0Z46vND3Wazzg"
+            />
         <activity
             android:name="CarryCompass"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.App"/>
+        <activity
+            android:name=".GeolocationActivity"
+            android:exported="true"
+            android:label="Mapa"
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
