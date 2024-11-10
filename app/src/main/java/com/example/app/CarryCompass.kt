@@ -15,6 +15,7 @@ class CarryCompass : ComponentActivity() {
     private lateinit var adapter: ProductAdapter
     private lateinit var productList: MutableList<Product>
     private lateinit var btnIrAlMapa: Button
+    private lateinit var agregarProductoButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,13 @@ class CarryCompass : ComponentActivity() {
         btnIrAlMapa = findViewById(R.id.btnIrAlMapa)
         btnIrAlMapa.setOnClickListener {
             val intent = Intent(this, GeolocationActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Inicializar y configurar el botón "Agregar Producto"
+        agregarProductoButton = findViewById(R.id.agregarProductoButton)
+        agregarProductoButton.setOnClickListener {
+            val intent = Intent(this, CrearActivity::class.java)
             startActivity(intent)
         }
     }
