@@ -2,21 +2,28 @@ package com.example.app.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.app.EditActivity
 import com.example.app.R
 import com.example.app.models.Product
+import com.example.app.network.ApiClient
+import com.example.app.network.ApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProductAdapter(
     private val productList: MutableList<Product>,
-    private val context: Context
+    private val context: Context,
+    private val token: String // Añade el token como parámetro
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -25,30 +32,53 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = productList[position]
+        val product = productList[position] // Usar posición directamente aquí
 
         holder.productName.text = product.name
         holder.productDescription.text = product.description
         holder.productPrice.text = "$${product.price}"
 
         Glide.with(context)
-            .load(product.imageUrl)
+            .load(product.image)
             .into(holder.productImage)
 
         // Configurar el botón "Editar"
         holder.editButton.setOnClickListener {
-            val intent = Intent(context, EditActivity::class.java).apply {
-                putExtra("nombre", product.name)
-                putExtra("descripcion", product.description)
-                putExtra("precio", product.price.toDouble())
+            val currentPosition = holder.adapterPosition
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                val currentProduct = productList[currentPosition]
+                val intent = Intent(context, EditActivity::class.java).apply {
+                    putExtra("id", currentProduct.id) // Enviar ID como Int
+                    putExtra("nombre", currentProduct.name)
+                    putExtra("descripcion", currentProduct.description)
+                    putExtra("precio", currentProduct.price)
+                }
+                context.startActivity(intent)
             }
-            context.startActivity(intent)
         }
 
         // Configurar el botón "Eliminar"
         holder.deleteButton.setOnClickListener {
-            productList.removeAt(position)
-            notifyItemRemoved(position)
+            val currentPosition = holder.adapterPosition // Usar adapterPosition
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                val apiService = ApiClient.retrofit.create(ApiService::class.java)
+
+                apiService.deleteProduct(product.id!!, token).enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Producto eliminado exitosamente", Toast.LENGTH_SHORT).show()
+                            productList.removeAt(currentPosition) // Usa posición actualizada
+                            notifyItemRemoved(currentPosition)
+                        } else {
+                            Toast.makeText(context, "Error al eliminar el producto: ${response.message()}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Toast.makeText(context, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
         }
     }
 

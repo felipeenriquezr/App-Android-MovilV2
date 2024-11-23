@@ -55,6 +55,12 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.androidx.core.ktx)
     implementation (libs.glide)
+    // Retrofit para consumo de API
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    // OkHttp para logging de peticiones (opcional)
+    implementation (libs.logging.interceptor)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

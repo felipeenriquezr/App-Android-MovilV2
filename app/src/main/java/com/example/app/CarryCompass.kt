@@ -6,8 +6,14 @@ import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Button
+import android.widget.Toast
 import com.example.app.adapters.ProductAdapter
 import com.example.app.models.Product
+import com.example.app.network.ApiClient
+import com.example.app.network.ApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CarryCompass : ComponentActivity() {
 
@@ -17,6 +23,9 @@ class CarryCompass : ComponentActivity() {
     private lateinit var btnIrAlMapa: Button
     private lateinit var agregarProductoButton: Button
 
+    // Suponiendo que tienes un método para obtener el token
+    private val token: String = getToken() // Método ficticio para obtener el token
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_carro_compras)
@@ -24,28 +33,66 @@ class CarryCompass : ComponentActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        productList = mutableListOf(
-            Product("Producto A", "Descripcion 1", "10.99", "https://www.elevencomunicacion.com/wp-content/uploads/2021/02/foto-profesional-producto-restaurante.jpg"),
-            Product("Producto B", "Descripcion 2", "15.49", "default.jpg"),
-            Product("Producto C", "Descripcion 3", "8.75", "default.jpg"),
-            Product("Producto D", "Descripcion 4", "12.30", "default.jpg")
-        )
+        btnIrAlMapa = findViewById(R.id.btnIrAlMapa)
+        agregarProductoButton = findViewById(R.id.agregarProductoButton)
 
-        // Pasar el contexto al adaptador
-        adapter = ProductAdapter(productList, this)
+        productList = mutableListOf()
+        // Asegúrate de pasar el token al crear el adaptador
+        adapter = ProductAdapter(productList, this, token)
         recyclerView.adapter = adapter
 
-        btnIrAlMapa = findViewById(R.id.btnIrAlMapa)
+        // Navegar al mapa
         btnIrAlMapa.setOnClickListener {
-            val intent = Intent(this, GeolocationActivity::class.java)
-            startActivity(intent)
+            irAlMapa()
         }
 
-        // Inicializar y configurar el botón "Agregar Producto"
-        agregarProductoButton = findViewById(R.id.agregarProductoButton)
+        // Navegar a la pantalla de agregar producto
         agregarProductoButton.setOnClickListener {
             val intent = Intent(this, CrearActivity::class.java)
             startActivity(intent)
         }
+
+        loadProducts()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadProducts()
+    }
+
+    private fun loadProducts() {
+        val apiService = ApiClient.retrofit.create(ApiService::class.java)
+
+        apiService.getAllProducts().enqueue(object : Callback<List<Product>> {
+            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
+                if (response.isSuccessful) {
+                    productList.clear()
+                    response.body()?.let {
+                        productList.addAll(it)
+                    }
+                    adapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(
+                        this@CarryCompass,
+                        "Error: ${response.message()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                Toast.makeText(this@CarryCompass, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun irAlMapa() {
+        val intent = Intent(this, GeolocationActivity::class.java)
+        startActivity(intent)
+    }
+
+    // Método ficticio para obtener el token, debes reemplazarlo con tu propia implementación
+    private fun getToken(): String {
+        return "someTokenValue" // Aquí deberías obtener el token desde tus preferencias o autenticación
     }
 }
